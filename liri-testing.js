@@ -1,6 +1,6 @@
 //Variables===================================================	
 var request = require('request');
-var keys = require("./keys.js")
+var keys = require("./keys.js");
 var inquirer = require("inquirer");
 var fs = require("fs");
 var twitter = require('twitter');
@@ -30,8 +30,8 @@ function tweet(data) {
         console.log("BY: " + data[i].user.name);
         console.log("");
         console.log("====================================================================");
-    };
-};
+    }
+}
 //This function asks user to type a song name, and use the song name to search from the spotify api and organize the response.
 function spotifire() {
     inquirer.prompt([{
@@ -47,17 +47,17 @@ function spotifire() {
             for (var i = 0; i < data.tracks.items.length; i++) {
                 console.log("====================================================================");
                 console.log("");
-                console.log("Search " + (i + 1))
+                console.log("Search " + (i + 1));
                 console.log("Artist Name: " + data.tracks.items[i].album.artists[0].name);
                 console.log("The Song's Name: " + data.tracks.items[i].name);
                 console.log("A preview link of the song: " + data.tracks.items[i].external_urls.spotify);
                 console.log("The Album's Name: " + data.tracks.items[i].album.name);
                 console.log("");
                 console.log("====================================================================");
-            };
+            }
         })
     });
-};
+}
 //This function retrieve data from imdb.
 function imdbcall() {
     inquirer.prompt([{
@@ -65,8 +65,8 @@ function imdbcall() {
         message: "Please type the name of movie you would like to search",
         name: 'name'
     }]).then(function(user) {
-        movieName = user.name;
-        queryUrl = 'http://www.omdbapi.com/?t=' + movieName;
+        var movieName = user.name;
+        var queryUrl = 'http://www.omdbapi.com/?t=' + movieName;
         request(queryUrl, function(error, response, body) {
             if (error || response.statsuCode !== 200) console.log(error);
             console.log("====================================================================");
@@ -83,13 +83,13 @@ function imdbcall() {
             console.log("====================================================================");
         });
     });
-};
-
+}
 //Main function
 function main(command) {
     switch (command) {
         case 'my-tweets':
             //get method will access to tweeter account using a client variable which preset with the keys then it will retrieve 20 most recent statues and home timeline messages.
+            //noinspection JSUndeclaredVariable
             client.get('statuses/home_timeline', count = 1, function(error, tweets, response) {
                 if (error || response.statusCode !== 200) console.log(error);
                 tweet(tweets);
@@ -103,12 +103,12 @@ function main(command) {
             break;
         case 'do-what-it-says':
             fs.readFile("random.txt", "utf8", function(error, data) {
-                console.log(data.split(",")[0])
+                console.log(data.split(",")[0]);
                 command= data.split(",")[0];
             });
             break;
 
-    };
+    }
 }
 
 
@@ -130,7 +130,7 @@ inquirer.prompt([{
     //set up the user choise as a variable, so we can easily use it on our functions.
     var command = user.command;
     main(command);
-})
+});
 
 
 

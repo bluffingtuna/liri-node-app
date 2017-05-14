@@ -1,6 +1,6 @@
 //Variables
 var request = require('request');
-var keys = require("./keys.js")
+var keys = require("./keys.js");
 var inquirer = require("inquirer");
 var fs = require("fs");
 var twitter = require('twitter');
@@ -14,7 +14,7 @@ var client = new twitter({
     access_token_secret: keys.twitterKeys.access_token_secret
 });
 //store user inputs in a variable
-var string = process.argv
+var string = process.argv;
     //user's commands.
 var command = string[2];
 //This variable captures the user input
@@ -22,15 +22,15 @@ var choice = string[3];
 if (string[4]) {
     for (var i = 4; i < string.length; i++) {
         choice += " " + string[i];
-    };
-};
+    }
+}
 //============================================================
 
 //Functions
 //This function generates tweets response.
 function tweet(data) {
     //This is an empty array which will store the data in JSON format.
-    var array = []
+    var array = [];
     for (var i = 0; i < data.length; i++) {
         var object = {};
         object.Count = (i + 1);
@@ -38,18 +38,18 @@ function tweet(data) {
         object.Tweet = data[i].text;
         object.User = data[i].user.name;
         array.push(object);
-    };
+    }
     console.log(JSON.stringify(array, null, 2));
     //BONUS this will store the data to a log.txt file.
     store(JSON.stringify(array, null, 2));
 
-};
+}
 //This function uses users song name to search the song from spotify.
 function spotifire(choice) {
     var songName = choice;
     //This if statement checks to see if the user has input the song. otherwise it will default to search "The Sign" by Ace of Base.
-    if (songName == undefined) songName = "The Sign Ace of Base";
-    console.log(songName)
+    if (songName === undefined) songName = "The Sign Ace of Base";
+    console.log(songName);
     spotify.search({ type: "track", query: songName }, function(err, data) {
         if (err) console.log("Error occurred: " + err);
         var array = [];
@@ -61,18 +61,18 @@ function spotifire(choice) {
             object.PreviewLink = data.tracks.items[i].external_urls.spotify;
             object.AlbumName = data.tracks.items[i].album.name;
             array.push(object);
-        };
+        }
         console.log(JSON.stringify(array, null, 2));
         store(JSON.stringify(array, null, 2));
     });
-};
+}
 //This function retrieve data from imdb using user's input.
 function imdbcall(choice) {
     var movieName = choice;
     //This if statement checks to see if the user has input the movie name, otherwise it will set the default movie title as "Mr. Nobody"
-    if (movieName == undefined) movieName = "Mr. Nobody"
-    console.log(movieName)
-    queryUrl = 'http://www.omdbapi.com/?t=' + movieName;
+    if (movieName === undefined) movieName = "Mr. Nobody";
+    console.log(movieName);
+    var queryUrl = 'http://www.omdbapi.com/?t=' + movieName;
     request(queryUrl, function(error, response, body) {
         if (error || response.statsuCode !== 200) console.log(error);
         var text = {};
@@ -87,8 +87,7 @@ function imdbcall(choice) {
         console.log(JSON.stringify(text, null, 2));
         store(JSON.stringify(text, null, 2));
     });
-};
-
+}
 //Main function
 function main(command) {
     switch (command) {
@@ -119,15 +118,14 @@ function main(command) {
             console.log("3.node liri.js movie-this '<movie name here>'");
             console.log("4.node liri.js do-what-it-says");
             break;
-    };
-};
+    }
+}
 //Bonus question, This function will store the response to the log txt file.
 function store(text) {
     fs.appendFile('log.txt', text, function(error) {
         if (error) console.log(error);
     });
-};
-
+}
 //============================================================
 
 //Main Process
